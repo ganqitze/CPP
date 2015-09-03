@@ -36,8 +36,9 @@ bool super_1_limit=false;
 bool super_2_limit=false;
 bool super_3_limit=false;
 int score(int& x_marker, int& o_marker);
-// int save();
-// ifstream in_stream;
+int save();
+int load();
+
 // int check_legal_move();
 
 // int check_legal_move(){
@@ -72,8 +73,11 @@ int main(){
 			gameplay();
 			break;
 		case 2: 
-			// inFile.open("a.txt");
-			// break;
+			load();
+			score( x_marker, o_marker);
+			display_board();
+			gameplay();
+			break;
 		case 3:
 			help();
 			system("pause");		//press any key to continue...
@@ -135,6 +139,29 @@ void help(){			//help menu content
 // in_a >> first >> second >> third;
 // out_a << "one number = " << out number;
 //read slide
+
+int load(){
+	ifstream loadgame;
+	loadgame.open("a.txt");
+	for(int i=0; i<8; i++){
+		for(int j=0; j<8;j++){
+			loadgame.get(board[i][j]);
+		}
+	}
+	loadgame >> turn;
+}
+
+int save(){
+	ofstream savegame;
+	savegame.open("a.txt");
+	for(int i=0; i<8; i++){
+		for(int j=0; j<8;j++){
+			savegame << board[i][j];			
+		}
+	}
+	savegame << turn;
+}
+
 
 // int super(){
 // 	int super_number;
@@ -401,9 +428,9 @@ int gameplay(){
 			system("CLS");
 			main();
 		}
-		// else if (command=="save"){
-		// 	save();
-		// }
+		else if (command=="save"){
+			save();
+		}
 		else if(command == "next")					//turn to next player to make his move
 		{	
 			if(turn=='X'){
