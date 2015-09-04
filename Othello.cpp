@@ -38,32 +38,34 @@ bool super_3_limit=false;
 int score(int& x_marker, int& o_marker);
 int save();
 int load();
+char load_file_name[16];
 
 // int check_legal_move();
 
 // int check_legal_move(){
 // 	int count;
-// 	for (a=0; a<8 && a>=0;a++){
-// 		for (b=0; b<8 && b>=0; b++){
+// 	for (int a=0; a<8 && a>=0;a++){
+// 		for (int b=0; b<8 && b>=0; b++){
 // 			board[a][b]=turn;
-// 			count = check_move_possible( marker_flip, row, col);
+// 			count = check_move_possible(marker_flip, a, b);
 // 		}
 // 	}
-// 	if (count == 0){
-// 		//next player
-// 		// cout blah blah blah
-// 	}
-// 	else return;
+// 	cout << "c " << count;
+// 	// if (count == 0){
+// 	// 	//next player
+// 	// 	// cout blah blah blah
+// 	// }
+// 	// else return;
 // }
 
 int main(){
 	banner ();	
 	menubar();
 	cin >> menu;		//selection of menu
-	cout << endl;
-	system("CLS");		
+	cout << endl;			
 	switch(menu){
 		case 1:
+			system("CLS");
 			board[4][3]='0';
 			board[4][4]='X';
 			board[3][3]='X';
@@ -73,12 +75,16 @@ int main(){
 			gameplay();
 			break;
 		case 2: 
+			cout << "Please input the file name. ==> ";
+			cin >> load_file_name;
+			system("CLS");
 			load();
 			score( x_marker, o_marker);
 			display_board();
 			gameplay();
 			break;
 		case 3:
+			system("CLS");
 			help();
 			system("pause");		//press any key to continue...
 			system("CLS");
@@ -130,30 +136,30 @@ void help(){			//help menu content
 	<< " Although it is NOT a complete game, but Enjoy!\n"; 
 }
 
-// int save(){
-// ifstream in_a;
-// ofstream out_a;
-// }
-// load --> in_a.open("Filename.dat");
-// output --> out_a.open("Filename.dat");
-// in_a >> first >> second >> third;
-// out_a << "one number = " << out number;
-//read slide
 
 int load(){
-	ifstream loadgame;
-	loadgame.open("a.txt");
-	for(int i=0; i<8; i++){
-		for(int j=0; j<8;j++){
-			loadgame.get(board[i][j]);
-		}
+	ifstream loadgame;	
+	loadgame.open(load_file_name);
+	if(loadgame.fail()){
+		cout << "load file fail.\n";
+		main();
 	}
-	loadgame >> turn;
+	else{
+		for(int i=0; i<8; i++){
+			for(int j=0; j<8;j++){
+				loadgame.get(board[i][j]);
+			}
+		}
+		loadgame >> turn;
+	}
 }
 
 int save(){
 	ofstream savegame;
-	savegame.open("a.txt");
+	char save_file_name[16];
+	cout << "Please input a file name. ==> ";
+	cin >> save_file_name;
+	savegame.open(save_file_name);
 	for(int i=0; i<8; i++){
 		for(int j=0; j<8;j++){
 			savegame << board[i][j];			
@@ -413,6 +419,7 @@ int check_win(){
 
 
 int gameplay(){	
+	//check_legal_move();
 	score(x_marker, o_marker);	
 	check_win();
 	if (!win && !draw){
@@ -430,6 +437,10 @@ int gameplay(){
 		}
 		else if (command=="save"){
 			save();
+			//system("CLS");
+			score(x_marker, o_marker);
+			display_board();
+			gameplay();
 		}
 		else if(command == "next")					//turn to next player to make his move
 		{	
@@ -522,39 +533,21 @@ int gameplay(){
 				{	
 					if (turn=='X'){	
 						board[row][col] = turn;
-						// x_marker=x_marker+marker_flip+1;
-						// o_marker=o_marker-marker_flip;
-						// if(super_2_limit)
-						// 	turn='X';
 						turn = '0';
 					}
 					else if (turn=='0'){
 						board[row][col] = turn;
-						// x_marker=x_marker-marker_flip;
-						// o_marker=o_marker+marker_flip+1;
-						// if(super_2_limit)
-						// 	turn='0';
 						turn = 'X';
 					}
 					else{
 						cout << " Error. Please input again.\a" << endl;
 						row = -1; col= -1;
 					}
-					
-			// 		if(super_2_limit){
-			// 	if(turn=='X'){
-			// 	turn='0';
-			// 	}
-			// 	else if(turn=='0'){
-			// 		turn='X';	
-			// 	}
-			// }
 					//system("CLS");
 					score(x_marker, o_marker);
 					display_board();
 					row = -1; col= -1;
 					gameplay();
-
 				}
 			}
 		}	
