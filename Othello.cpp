@@ -17,63 +17,66 @@ int menu;				//menu selection
 int row;
 int x_marker(0);
 int o_marker(0);
+int marker_flip(0);
 char turn('X');
 char col;
 string command;
 string gameboard("  |---+---+---+---+---+---+---+---|\n");
 char board[8][8] = {{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
+int gameplay();
+int check_move_possible(int& marker_flip, int& row, int& col);
+int check_win();
+int score(int& x_marker, int& o_marker);
+int save();
+int load();
+int skip();
+int valid();
+int super1();
+int super2();
+int super3();
 void banner();
 void menubar();
 void display_board();
 void help();
-int gameplay();
-int check_move_possible(int& marker_flip, int& row, int& col);
-int marker_flip(0);
-int check_win();
 bool win =false;
 bool draw = false;
 bool super_1_limit=false;
 bool super_2_limit=false;
 bool super_3_limit=false;
-int score(int& x_marker, int& o_marker);
-int save();
-int load();
+
+int combo(){
+	score( x_marker, o_marker);
+	display_board();
+	gameplay();
+}
 
 int main(){
+	
 	banner ();	
 	menubar();
 	cin >> menu;		//selection of menu
 	cout << endl;			
+	system("CLS");
 	switch(menu){
-		case 1:
-		system("CLS");
-		board[4][3]='0';
-		board[4][4]='X';
-		board[3][3]='X';
-		board[3][4]='0';
-		score( x_marker, o_marker);
-		display_board();
-		gameplay();
-		break;
+		case 1:			
+			board[4][3]='0';
+			board[4][4]='X';
+			board[3][3]='X';
+			board[3][4]='0';
+			combo();
+			break;
 		case 2: 
-		system("CLS");
-		load();
-		score( x_marker, o_marker);
-		display_board();
-		gameplay();
-		break;
+			load();
+			combo();
+			break;
 		case 3:
-		system("CLS");
-		help();
+			banner();
+			help();
 			system("pause");		//press any key to continue...
-			system("CLS");
 			main();
 			break;
-			case 4: 
+		case 4: 
 			exit(0);		//exit the program
-			default:
-			cout << " Invalid input\a. Please input again.";
-			main();
 		}
 	}
 
@@ -91,7 +94,7 @@ void menubar(){			//menu of the game
 	cout << " 2. Load a game" << endl;
 	cout << " 3. Help" << endl;
 	cout << " 4. Quit" << endl<< endl;
-	cout << "Selection: ";
+	cout << " Selection: ";
 }
 
 void display_board(){ 		//game board
@@ -114,7 +117,7 @@ void help(){			//help menu content
 	<< " For example, F3.\n After the input marker, input Next for next player.\n"
 	<< " If you wish to return to menu, input Menu.\n You can resume game by select again 1. New Game.\n"
 	<< " If you wish to use super power, input super1 for making the four corner belongs to you.\n"
-	<< " Input super2 for erase any row you like.\n"
+	<< " Input super2 for erase all four corner agde.\n"
 	<< " Input super3 to win the game.\n"
 	<< " All super power can only use once for both player.\n"; 
 }
@@ -123,7 +126,7 @@ int load(){
 	ifstream loadgame;	
 	loadgame.open("a.txt");
 	if(loadgame.fail()){
-		cout << " load file fail.\n";
+		cout << "\n load file fail.\n";
 		main();
 	}
 	else{
@@ -148,6 +151,8 @@ int save(){
 	savegame << turn;
 	cout << " D\aone saving game. ";
 	savegame.close();
+	system("CLS");
+	combo();
 }
 
 int check_move_possible(int& marker_flip, int& row, int& col){
@@ -290,12 +295,10 @@ int score(int& x_marker, int& o_marker){
 	o_marker=0;
 	for (int x=0; x<8 && x>=0; x++){
 		for ( int y=0; y<8 && y>=0; y++){
-			if(board[x][y]=='X'){
+			if(board[x][y]=='X')
 				x_marker++;
-			}
-			else if(board[x][y]=='0'){
+			else if(board[x][y]=='0')
 				o_marker++;
-			}
 			else{;}
 		}
 	}
@@ -314,9 +317,8 @@ int check_win(){
 		int i,j;
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
-				if (board[i][j]==' '){
+				if (board[i][j]==' ')
 					return 0;
-				}
 			}
 		}
 		if (x_marker > o_marker){
@@ -333,6 +335,78 @@ int check_win(){
 	}
 }
 
+int skip(){
+	if(turn=='X')
+		turn='0';
+	else if(turn=='0')
+		turn='X';	
+	system("CLS");
+	combo();
+}
+
+int valid(){
+	system("CLS");
+	cout << endl << " 'f 4', 'super1', 'super2', 'super3', 'skip', 'save', 'menu'. \n";
+	cout << " If no more legal move, please input 'skip'.\n" << endl;
+	combo();	
+}
+
+int super1(){
+	system("CLS");
+	if(super_1_limit==false){
+		super_1_limit=true;
+		board[0][0]=turn;
+		board[0][7]=turn;
+		board[7][7]=turn;
+		board[7][0]=turn;		
+		cout << endl << "  All 4 corner have been turn to "<< turn << ".\n"<< endl;
+		skip();		
+	}
+	else{
+		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;				
+	}
+	combo();
+}
+
+int super2(){
+	system("CLS");
+	if (super_2_limit == false){
+		super_2_limit =true;				
+		for(int k=0; k<8 && k>=0; k++){
+			board[1][k]=' ';
+			board[k][1]=' ';
+			board[7][k]=' ';
+			board[k][7]=' ';
+		}		
+		cout << endl << "  All 4 corner edge have been turn to "<< turn << ".\n"<< endl;
+		skip();
+	}
+	else {
+		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;	
+	}
+	combo();
+}
+
+int super3(){
+	system("CLS");
+	if (super_3_limit == false){
+		super_3_limit = true;
+		int probability = (rand()%3);
+		cout << probability;
+		if (probability ==2 ){
+			for(int i=0; i<8; i++){
+				for(int j=0; j<8; j++){
+					board[i][j]=turn;
+				}
+			}
+		}	
+	}
+	else{
+		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;				
+	}
+	combo();
+}
+
 int gameplay(){	
 	score(x_marker, o_marker);	
 	check_win();
@@ -343,105 +417,22 @@ int gameplay(){
 		for(int k=0; k<command.length(); k++){		//let all the string input to be lowercase
 			command[k]=tolower(command[k]);
 		}	
-		if (command == "menu"){				//jump to menu
+		if (command == "menu"){		//jump to menu
 			system("CLS");
 			main();
 		}
-		else if (command=="save"){
+		else if (command=="save")
 			save();
-			system("CLS");
-			score(x_marker, o_marker);
-			display_board();
-			gameplay();
-		}
-		else if (command=="valid"){
-			system("CLS");
-			cout << endl << " 'f 4', 'super1', 'super2', 'super3', 'skip', 'save', 'menu'. \n";
-			cout << " If no more legal move, please input 'skip'.\n" << endl;
-			score(x_marker, o_marker);
-			display_board();			
-			gameplay();			
-		}
-		else if(command == "skip")					//turn to next player to make his move
-		{	
-			if(turn=='X')
-				turn='0';
-			else if(turn=='0')
-				turn='X';	
-			system("CLS");
-			score(x_marker, o_marker);
-			display_board();
-			gameplay();
-		}
-		else if(command == "super1")					//turn to next player to make his move
-		{
-			if(super_1_limit==false){
-				super_1_limit=true;
-				board[0][0]=turn;
-				board[0][7]=turn;
-				board[7][7]=turn;
-				board[7][0]=turn;
-				system("CLS");
-				score(x_marker, o_marker);
-				display_board();
-				gameplay();
-			}
-			else{
-				cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;				
-				gameplay();
-			}
-		}
+		else if (command=="valid")
+			valid();
+		else if(command == "skip")					
+			skip();
+		else if(command == "super1")				
+			super1();
 		else if(command == "super2")		
-		{	
-			int erase_row;
-			if (super_2_limit == false){
-				super_2_limit =true;
-				cout << " Which row do you wish to erase? (1 to 8) ==> ";
-				cin >> erase_row;
-				if(erase_row<8 && erase_row>0){
-					for(int k=0; k<8 && k>=0; k++){
-						board[erase_row-1][k]=' ';
-					}
-					system("CLS");
-					
-				}
-				else {
-					cout << "\n \aInvalid input. Try input again. \n" << endl;
-					//ERROR. LOOP FOREVER.	
-				}
-				score(x_marker, o_marker);
-				display_board();
-				gameplay();
-								
-			}
-			else {
-				cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;	
-				gameplay();
-			}
-		}	
+			super2();
 		else if(command == "super3")
-		{	
-			if (super_3_limit == false){
-				super_3_limit = true;
-				int probability = (rand()%3);
-				cout << probability;
-				if (probability ==2 ){
-					for(int i=0; i<8; i++){
-						for(int j=0; j<8; j++){
-							board[i][j]=turn;
-						}
-					}
-				}
-				system("CLS");
-				score(x_marker, o_marker);
-				display_board();
-				gameplay();
-			}
-			else{
-				cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;				
-				gameplay();
-			}			
-		}	
+			super3();
 		else{
 			istringstream marker(command);		//separate the string input to both column and row		
 			marker >> col >> row;
@@ -454,31 +445,27 @@ int gameplay(){
 			if( marker_flip==0 || col<0 || col>7|| row < 0 || row > 7 || board[row][col]!=' '){								
 				system("CLS");
 				cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;
-				score(x_marker, o_marker);
-				display_board();
 				row = -1; col= -1;
-				gameplay();
+				combo();
 			}
 			else if (col>=0 && col<=7 && row >= 0 && row <= 7 && board[row][col]==' ' )
 			{ 		//make sure the input position is valid
 				{	
 					if (turn=='X'){	
 						board[row][col] = turn;
-						turn = '0';
+						skip();
 					}
 					else if (turn=='0'){
 						board[row][col] = turn;
-						turn = 'X';
+						skip();
 					}
 					else{
 						cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;			
 						row = -1; col= -1;
 					}
 					system("CLS");
-					score(x_marker, o_marker);
-					display_board();
 					row = -1; col= -1;
-					gameplay();
+					combo();
 				}
 			}
 		}	
