@@ -82,6 +82,7 @@ int main(){
 
 void banner (){			//banner of the game
 	string banner(" --------------------------------------");
+	system("cls");
 	cout << endl << banner << endl;
 	cout << "|           THE OTHELLO GAME          |" << endl;
 	cout << banner << endl;
@@ -477,7 +478,7 @@ int gameplay(){
 	}
 	else if (draw){
 		cout <<  "\n\n Game Over!" << endl
-			<< " Draw! " << endl;
+			 << " Draw! " << endl;
 	}
 }
 
