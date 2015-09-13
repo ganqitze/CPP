@@ -50,8 +50,7 @@ int combo(){
 	gameplay();
 }
 
-int main(){
-	
+int main(){	
 	banner ();	
 	menubar();
 	cin >> menu;		//selection of menu
@@ -73,6 +72,7 @@ int main(){
 			banner();
 			help();
 			system("pause");		//press any key to continue...
+			system("CLS");
 			main();
 			break;
 		case 4: 
@@ -119,14 +119,14 @@ void help(){			//help menu content
 	<< " If you wish to use super power, input super1 for making the four corner belongs to you.\n"
 	<< " Input super2 for erase all four corner agde.\n"
 	<< " Input super3 to win the game.\n"
-	<< " All super power can only use once for both player.\n"; 
+	<< " All super power can only use once for both player.\n\n"; 
 }
 
 int load(){
 	ifstream loadgame;	
 	loadgame.open("a.txt");
 	if(loadgame.fail()){
-		cout << "\n load file fail.\n";
+		cout << "\n Fail to load file.\n";
 		main();
 	}
 	else{
@@ -148,10 +148,10 @@ int save(){
 			savegame << board[i][j];			
 		}
 	}
-	savegame << turn;
-	cout << " D\aone saving game. ";
+	savegame << turn;	
 	savegame.close();
 	system("CLS");
+	cout << "\n  D\aone saving game. \n";
 	combo();
 }
 
@@ -314,7 +314,6 @@ int check_win(){
 		win = true;
 	}
 	else{
-		int i,j;
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
 				if (board[i][j]==' ')
@@ -340,14 +339,12 @@ int skip(){
 		turn='0';
 	else if(turn=='0')
 		turn='X';	
-	system("CLS");
-	combo();
 }
 
 int valid(){
 	system("CLS");
 	cout << endl << " 'f 4', 'super1', 'super2', 'super3', 'skip', 'save', 'menu'. \n";
-	cout << " If no more legal move, please input 'skip'.\n" << endl;
+	cout << " If no more legal move, please input 'skip'.\n";
 	combo();	
 }
 
@@ -359,11 +356,11 @@ int super1(){
 		board[0][7]=turn;
 		board[7][7]=turn;
 		board[7][0]=turn;		
-		cout << endl << "  All 4 corner have been turn to "<< turn << ".\n"<< endl;
+		cout << endl << "  All 4 corner have been turn to "<< turn << ".\n";
 		skip();		
 	}
 	else{
-		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;				
+		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n";				
 	}
 	combo();
 }
@@ -373,16 +370,16 @@ int super2(){
 	if (super_2_limit == false){
 		super_2_limit =true;				
 		for(int k=0; k<8 && k>=0; k++){
-			board[1][k]=' ';
-			board[k][1]=' ';
+			board[0][k]=' ';
+			board[k][0]=' ';
 			board[7][k]=' ';
 			board[k][7]=' ';
 		}		
-		cout << endl << "  All 4 corner edge have been turn to "<< turn << ".\n"<< endl;
+		cout << endl << "  All 4 corner edge have been turn to "<< turn << ".\n";
 		skip();
 	}
 	else {
-		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;	
+		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n";	
 	}
 	combo();
 }
@@ -392,7 +389,6 @@ int super3(){
 	if (super_3_limit == false){
 		super_3_limit = true;
 		int probability = (rand()%3);
-		cout << probability;
 		if (probability ==2 ){
 			for(int i=0; i<8; i++){
 				for(int j=0; j<8; j++){
@@ -402,7 +398,7 @@ int super3(){
 		}	
 	}
 	else{
-		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;				
+		cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n";				
 	}
 	combo();
 }
@@ -425,8 +421,11 @@ int gameplay(){
 			save();
 		else if (command=="valid")
 			valid();
-		else if(command == "skip")					
+		else if(command == "skip"){				
 			skip();
+			system("CLS");
+			combo();
+		}
 		else if(command == "super1")				
 			super1();
 		else if(command == "super2")		
@@ -444,7 +443,7 @@ int gameplay(){
 			check_move_possible(marker_flip, row, col);
 			if( marker_flip==0 || col<0 || col>7|| row < 0 || row > 7 || board[row][col]!=' '){								
 				system("CLS");
-				cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;
+				cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n";
 				row = -1; col= -1;
 				combo();
 			}
@@ -460,7 +459,7 @@ int gameplay(){
 						skip();
 					}
 					else{
-						cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n" << endl;			
+						cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n";			
 						row = -1; col= -1;
 					}
 					system("CLS");
@@ -471,13 +470,13 @@ int gameplay(){
 		}	
 	}	
 	else if(win){
-		cout << "\n Game Over! " << endl;
+		cout << "\n\n Game Over! " << endl;
 		cout << " Congratulation. Player " << turn << " Wins!" <<endl;
 		cout << " Player X : " << x_marker << " point" << endl;
 		cout << " Player 0 : " << o_marker << " point" << endl;
 	}
 	else if (draw){
-		cout <<  "\n Game Over!" << endl
+		cout <<  "\n\n Game Over!" << endl
 			<< " Draw! " << endl;
 	}
 }
