@@ -38,11 +38,22 @@ void banner();
 void menubar();
 void display_board();
 void help();
+void clearscreen();
 bool win =false;
 bool draw = false;
 bool super_1_limit=false;
 bool super_2_limit=false;
 bool super_3_limit=false;
+
+void clear_screen()
+{
+#ifdef WINDOWS
+    std::system("cls");
+#else
+    // Assume POSIX
+    std::system ("clear");
+#endif
+}
 
 int combo(){
 	score( x_marker, o_marker);
@@ -55,7 +66,7 @@ int main(){
 	menubar();
 	cin >> menu;		//selection of menu
 	cout << endl;			
-	system("CLS");
+	clear_screen();
 	switch(menu){
 		case 1:			
 			board[4][3]='0';
@@ -72,7 +83,7 @@ int main(){
 			banner();
 			help();
 			system("pause");		//press any key to continue...
-			system("CLS");
+			clear_screen();
 			main();
 			break;
 		case 4: 
@@ -82,7 +93,7 @@ int main(){
 
 void banner (){			//banner of the game
 	string banner(" --------------------------------------");
-	system("cls");
+	clear_screen();
 	cout << endl << banner << endl;
 	cout << "|           THE OTHELLO GAME          |" << endl;
 	cout << banner << endl;
@@ -151,7 +162,7 @@ int save(){
 	}
 	savegame << turn;	
 	savegame.close();
-	system("CLS");
+	clear_screen();
 	cout << "\n  D\aone saving game. \n";
 	combo();
 }
@@ -343,14 +354,14 @@ int skip(){
 }
 
 int valid(){
-	system("CLS");
+	clear_screen();
 	cout << endl << " 'f 4', 'super1', 'super2', 'super3', 'skip', 'save', 'menu'. \n";
 	cout << " If no more legal move, please input 'skip'.\n";
 	combo();	
 }
 
 int super1(){
-	system("CLS");
+	clear_screen();
 	if(super_1_limit==false){
 		super_1_limit=true;
 		board[0][0]=turn;
@@ -367,7 +378,7 @@ int super1(){
 }
 
 int super2(){
-	system("CLS");
+	clear_screen();
 	if (super_2_limit == false){
 		super_2_limit =true;				
 		for(int k=0; k<8 && k>=0; k++){
@@ -386,7 +397,7 @@ int super2(){
 }
 
 int super3(){
-	system("CLS");
+	clear_screen();
 	if (super_3_limit == false){
 		super_3_limit = true;
 		int probability = (rand()%3);
@@ -415,7 +426,7 @@ int gameplay(){
 			command[k]=tolower(command[k]);
 		}	
 		if (command == "menu"){		//jump to menu
-			system("CLS");
+			clear_screen();
 			main();
 		}
 		else if (command=="save")
@@ -424,7 +435,7 @@ int gameplay(){
 			valid();
 		else if(command == "skip"){				
 			skip();
-			system("CLS");
+			clear_screen();
 			combo();
 		}
 		else if(command == "super1")				
@@ -443,7 +454,7 @@ int gameplay(){
 			col = a;
 			check_move_possible(marker_flip, row, col);
 			if( marker_flip==0 || col<0 || col>7|| row < 0 || row > 7 || board[row][col]!=' '){								
-				system("CLS");
+				clear_screen();
 				cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n";
 				row = -1; col= -1;
 				combo();
@@ -463,7 +474,7 @@ int gameplay(){
 						cout << "  \n \aInvalid input. Try enter 'valid' to view example of valid input. \n";			
 						row = -1; col= -1;
 					}
-					system("CLS");
+					clear_screen();
 					row = -1; col= -1;
 					combo();
 				}
@@ -481,4 +492,5 @@ int gameplay(){
 			 << " Draw! " << endl;
 	}
 }
+
 
