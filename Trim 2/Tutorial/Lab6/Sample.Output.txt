@@ -1,0 +1,93 @@
+Default constructor called.
+Array is empty.
+Choice:
+1: Add new point at the front
+2: Add new point at the end
+3: Remove point at the front
+4: Remove point at the end
+Others: Exit
+1
+Overloaded constructor called.
+Destructor called.
+Default constructor called.
+
+(1,1) 
+Choice:
+1: Add new point at the front
+2: Add new point at the end
+3: Remove point at the front
+4: Remove point at the end
+Others: Exit
+2
+Overloaded constructor called.
+Destructor called.
+Default constructor called.
+Default constructor called.
+Destructor called.
+
+(1,1) (2,2) 
+Choice:
+1: Add new point at the front
+2: Add new point at the end
+3: Remove point at the front
+4: Remove point at the end
+Others: Exit
+2
+Overloaded constructor called.
+Destructor called.
+Default constructor called.
+Default constructor called.
+Default constructor called.
+Destructor called.
+Destructor called.
+
+(1,1) (2,2) (3,3) 
+Choice:
+1: Add new point at the front
+2: Add new point at the end
+3: Remove point at the front
+4: Remove point at the end
+Others: Exit
+3
+Default constructor called.
+Default constructor called.
+Destructor called.
+Destructor called.
+Destructor called.
+
+(2,2) (3,3) 
+Choice:
+1: Add new point at the front
+2: Add new point at the end
+3: Remove point at the front
+4: Remove point at the end
+Others: Exit
+4
+Default constructor called.
+Destructor called.
+Destructor called.
+
+(2,2) 
+Choice:
+1: Add new point at the front
+2: Add new point at the end
+3: Remove point at the front
+4: Remove point at the end
+Others: Exit
+4
+Destructor called.
+
+Array is empty.
+Choice:
+1: Add new point at the front
+2: Add new point at the end
+3: Remove point at the front
+4: Remove point at the end
+Others: Exit
+5
+
+Array is empty.
+Destructor called.
+
+
+
